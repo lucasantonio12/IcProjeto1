@@ -10,5 +10,17 @@ package pso;
  * @author lucas
  */
 public class Particula {
+    /*
+    private final int[] posicaoAtual;
+    private double valorPosicaoAtual;
+
+    private final int[] melhorPosicao;
+    private Double valorMelhorPosicao;
+
+    private final double[] velocidade;
     
+    public Particula(){
+    
+    }
+    */
 }
