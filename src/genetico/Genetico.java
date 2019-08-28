@@ -125,11 +125,11 @@ public class Genetico {
     }
 
     private ArrayList<Individuo> cruzamento(ArrayList<Individuo> pais) {
-        double[] pai0 = pais.get(0).getGenes();
-        double[] pai1 = pais.get(1).getGenes();
-
-        double[] filho0 = new double[pai0.length];
-        double[] filho1 = new double[pai1.length];
+        int[] pai0 = pais.get(0).getCromossomo();
+        int[] pai1 = pais.get(1).getCromossomo();
+        
+        int[] filho0 = new int[pai0.length];
+        int[] filho1 = new int[pai1.length];
 
         if (r.nextDouble() <= TAXADECRUZAMENTO) {
             // se tiver mais genes, adapta os pontos de corte

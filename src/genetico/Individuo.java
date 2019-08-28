@@ -11,66 +11,83 @@ public class Individuo implements Comparable<Individuo>{
     private final Random random = new Random();
     private Double aptidao;
     
-    private double qtdDinheiro;
-    private double qtdPeso;
+    private final static int [] qtdPeso = {1, 2, 3, 4, 5, 6};
+    private final static int [] valor = {10, 15, 12, 13, 20, 30};
+   
+    
+    private int qtdTotal = 25;
+    private int[] cromossomo;
+    private int somaPeso;
     
     public Individuo(){
+        cromossomo = new int[qtdTotal];
         do{
-            this.setQtdDinheiro();
-            this.setQtdPeso();
+            this.setCromossomo(cromossomo);
         } while (!validar());
         avaliar();
     }
     
-    public Individuo(double[] genes){
-        qtdDinheiro = genes[0];
-        qtdPeso = genes[1];
-        
-        if(random.nextDouble() <= Genetico.TAXADEMUTACAO){
-            int posAleatoria = random.nextInt(genes.length);
-            mutacao(posAleatoria);
+    public Individuo(int[] cromossomo){
+      
+       for(int i = 0; i < cromossomo.length; i++){
+           if(random.nextDouble() <= Genetico.TAXADEMUTACAO)
+               mutacao(cromossomo[i]);         
         }
-        avaliar();
     }
     
     private boolean validar(){
-        return  qtdPeso<= 15;
+        
+        return  somaPeso <= qtdTotal;
     }
     
     private void avaliar() {
-        aptidao = qtdDinheiro;
+        aptidao = valor;
     }
     
      private void mutacao(int posicao) {
         do {
-            if (posicao == 0) {
-                this.setQtdDinheiro();
-            } else if (posicao == 1) {
-                this.setQtdPeso();
+            if (cromossomo[posicao] == 1) {
+                cromossomo[posicao] = 0;
+            } else {
+                 cromossomo[posicao] = 1;
             }
         } while (!validar());
     }
 
-    public void setQtdDinheiro() {
-        this.qtdDinheiro = random.nextDouble();
+    public int[] getCromossomo() {
+        return cromossomo;
     }
 
-    public void setQtdPeso() {
-        this.qtdPeso = random.nextDouble();
+    public void setCromossomo(int[] cromossomo) {
+        for (int i = 0; i < cromossomo.length; i++){
+            if(random.nextBoolean()){
+                cromossomo[i] = 1;
+            }else{
+                cromossomo[i] = 0;
+            } 
+        }
     }
-    
+
+    public void setQtdPeso(int qtdPeso) {
+        this.qtdPeso = qtdPeso;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    public void setQtdTotal(int qtdTotal) {
+        this.qtdTotal = qtdTotal;
+    }
+         
+   
     public double getAptidao(){
         return aptidao;
     }
-    
-    public double[] getGenes() {
-        return new double[]{qtdDinheiro, qtdPeso};
-    }
-    
-    
+ 
     @Override
     public String toString() {
-        return "Cromossomo " + Arrays.toString(getGenes()) + " Aptidao: " + aptidao + "\n";
+        return "Cromossomo " + Arrays.toString(getCromossomo()) + " Aptidao: " + aptidao + "\n";
     }
 
     @Override
