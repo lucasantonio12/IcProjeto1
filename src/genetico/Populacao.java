@@ -30,7 +30,7 @@ public class Populacao {
    
     public void ordenarPopulacao() {
         //crescente para casos de minimização
-        Collections.sort(individuos);
+        Collections.sort(individuos,Collections.reverseOrder());
     }
 
     public Individuo getIndividuo(int pos) {
