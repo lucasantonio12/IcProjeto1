@@ -11,11 +11,12 @@ public class Individuo implements Comparable<Individuo> {
 
     private final Random random = new Random();
     private Double aptidao;
+    private Double aptidaoMax;
     double pesoMaximo = 0;
-    private final static int[] peso = {1, 2, 3, 4, 5, 6};
-    private final static int[] valor = {10, 15, 12, 13, 20, 30};
-   
-    private int qtdTotal = 15;
+    private final static int[] PESO = {1, 20, 3, 8, 5, 10};
+    private final static int[] VALOR = {10, 15, 12, 13, 20, 30};
+
+    private final int qtdTotal = 15;
     private int[] cromossomo;
 
     public Individuo() {
@@ -31,34 +32,37 @@ public class Individuo implements Comparable<Individuo> {
 
         cromossomo = genes;
         //testa se deve fazer mutacao
-        if (random.nextDouble() <= Genetico.TAXADEMUTACAO) {
-            int posAleatoria = random.nextInt(genes.length); //define gene que sera mutado
-            mutacao(posAleatoria);
-        }
+        do {
+            if (random.nextDouble() <= Genetico.TAXADEMUTACAO) {
+                int posAleatoria = random.nextInt(genes.length); //define gene que sera mutado
+                mutacao(posAleatoria);
+            }
+        } while (!validar());
         avaliar();
     }
 
     private boolean validar() {
-        double pesodo_cromo = 0;
+        double pesodo_cromo = 0.0;
+        pesoMaximo = 0.0;
         for (int i = 0; i < 6; i++) {
             if (cromossomo[i] == 1) {
-                pesodo_cromo += peso[i];             
+                pesodo_cromo += PESO[i];
             }
-            pesoMaximo = pesodo_cromo;
         }
+        pesoMaximo = pesodo_cromo;
         return pesodo_cromo <= qtdTotal;
     }
 
     private void avaliar() {
-       aptidao = 0.0;
+        aptidao = 0.0;
+        aptidaoMax = 0.0;
         for (int i = 0; i < 6; i++) {
             if (cromossomo[i] == 1) {
-               
-                aptidao += valor[i];
-               
+                aptidao += VALOR[i];
             }
-             //System.out.println("print teste" + valor[i]  + " " +  aptidao);
+            //System.out.println("print teste" + valor[i]  + " " +  aptidao);
         }
+        aptidaoMax = aptidao;
     }
 
     private void mutacao(int posicao) {
@@ -81,13 +85,14 @@ public class Individuo implements Comparable<Individuo> {
     }
 
     private void setCromossomo() {
-       boolean y = random.nextBoolean();
+        boolean y = random.nextBoolean();
         for (int i = 0; i < 6; i++) {
-            if(y == true)
+            if (y == true) {
                 cromossomo[i] = 1;
-            else if (y == false )
+            } else if (y == false) {
                 cromossomo[i] = 0;
-            
+            }
+
         }
     }
 
@@ -95,10 +100,9 @@ public class Individuo implements Comparable<Individuo> {
         return aptidao;
     }
 
-    
     @Override
     public String toString() {
-        return "Cromossomo " + Arrays.toString(getCromossomo()) + " Aptidao: " + aptidao + " Peso: " + pesoMaximo + "\n" ;
+        return "Cromossomo " + Arrays.toString(getCromossomo()) + " Aptidao: " + aptidaoMax + " Peso: " + pesoMaximo + "\n";
     }
 
     @Override
