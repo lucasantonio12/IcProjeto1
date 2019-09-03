@@ -18,11 +18,14 @@ public class Particula implements Comparable<Particula> {
 
     private final int[] melhorPosicao;
     private Double valorMelhorPosicao;
-
+    private double pesototal;
     private final double[] velocidade;
-
+    /*
     private final static int[] PESO = {1, 20, 3, 8, 5, 10};
     private final static int[] VALOR = {10, 15, 12, 13, 20, 30};
+    */
+    private final static int[] PESO = {1,10,2,20,40,50,1,2,3,8,7,9,18,14,1,5,16,24,15,16,13,25,24,32,12,17,19,9,6,8,7,4};
+    private final static int[] VALOR = {2,45,12,26,23,15,17,18,19,4,2,3,5,6,7,8,9,14,15,50,14,16,23,25,28,49,12,1,8,7,8,9};
 
     public Particula() {
         /*
@@ -42,25 +45,27 @@ public class Particula implements Comparable<Particula> {
     }
 
     private void inicializarPosicao() {
-        for (int i = 0; i < posicaoAtual.length; i++) {
-            if (Math.random() < 0.5) {
-                posicaoAtual[i] = 0;
-            } else {
-                posicaoAtual[i] = 1;
+        do {
+            for (int i = 0; i < posicaoAtual.length; i++) {
+                if (Math.random() < 0.5) {
+                    posicaoAtual[i] = 0;
+                } else {
+                    posicaoAtual[i] = 1;
+                }
             }
-        }
+        } while (!validar());
     }
 
     private boolean validar() {
         double pesodo_cromo = 0.0;
-
-        for (int i = 0; i < 6; i++) {
+        pesototal = 0;
+        for (int i = 0; i < posicaoAtual.length; i++) {
             if (posicaoAtual[i] == 1) {
                 pesodo_cromo += PESO[i];
             }
         }
-
-        return pesodo_cromo <= 15;
+        pesototal = pesodo_cromo;
+        return pesodo_cromo <= 50;
     }
 
     private void inicializarVelocidade() {
@@ -81,19 +86,21 @@ public class Particula implements Comparable<Particula> {
 
     public void avaliarSolucao() {
         valorPosicaoAtual = 0.0;
-   
+
         for (int i = 0; i < posicaoAtual.length; i++) {
+
             if (posicaoAtual[i] == 1) {
                 valorPosicaoAtual += VALOR[i];
             }
+
             //System.out.println("print teste" + valor[i]  + " " +  aptidao);
         }
-      
-            if (valorPosicaoAtual > valorMelhorPosicao) {
-                valorMelhorPosicao = valorPosicaoAtual;
-                System.arraycopy(posicaoAtual, 0, melhorPosicao, 0, posicaoAtual.length);
-            }
-        
+
+        if (valorPosicaoAtual > valorMelhorPosicao) {
+            valorMelhorPosicao = valorPosicaoAtual;
+            System.arraycopy(posicaoAtual, 0, melhorPosicao, 0, posicaoAtual.length);
+        }
+
     }
 
     public void setValorPosicaoAtual(double v) {
@@ -119,16 +126,18 @@ public class Particula implements Comparable<Particula> {
 
     public void atualizarPosicao() {
         double s;
-        for (int i = 0; i < posicaoAtual.length; i++) {
-            //funcao sigmoid sobre a velocidade
-            s = (1 / (1 + Math.exp(-velocidade[i])));
+        do {
+            for (int i = 0; i < posicaoAtual.length; i++) {
+                //funcao sigmoid sobre a velocidade
+                s = (1 / (1 + Math.exp(-velocidade[i])));
 
-            if (Math.random() < s) {
-                posicaoAtual[i] = 1;
-            } else {
-                posicaoAtual[i] = 0;
+                if (Math.random() < s) {
+                    posicaoAtual[i] = 1;
+                } else {
+                    posicaoAtual[i] = 0;
+                }
             }
-        }
+        } while (!validar());
     }
 
     public double getValorPosicaoAtual() {
@@ -143,11 +152,12 @@ public class Particula implements Comparable<Particula> {
         return melhorPosicao;
     }
 
+    
     //Compara as particulas pela melhor solucao que cada uma tem
     @Override
     public int compareTo(Particula o) {
-          return valorMelhorPosicao.compareTo(o.getValorMelhorPosicao());
-       
+        return valorMelhorPosicao.compareTo(o.getValorMelhorPosicao());
+
     }
 
 }
