@@ -32,41 +32,17 @@ public class Nuvem {
         melhorPosicaoNuvem = new int[PrincipalPSO.QTDATRIBUTOS];
     }
     
-     private void avaliarNuvem() {
-        Thread[] pool = new Thread[particulas.size()];
-       
-        int cont = 0;
-        for (Particula p : particulas) {
-           
-           pool[cont].start();
-           cont++;
-        }
-
-        for (Thread t : pool) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                System.out.println("Erro em thread join");
-            }
-        }
-
-        cont = 0;
-        int i = 0;
-        for (Particula p : particulas) {
-            p.setValorPosicaoAtual(i);
-            cont++;
-        }
-
-    }
+     
     
     public void executarPSO() {
         System.out.println("------EXECUTANDO PSO------");
         for (int i = 0; i < PrincipalPSO.QTDITERACOES; i++) {
-            //avaliarNuvem();
+         
 
             //verificar qual a melhor solucao da nuvem
             for (Particula p : particulas) {
                 p.avaliarSolucao();//Cada particula verifica se seu melhor mudou
+                
             }
 
             // ordenar nuvem (ordem decrescente)

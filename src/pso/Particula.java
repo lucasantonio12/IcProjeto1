@@ -11,25 +11,27 @@ import java.util.ArrayList;
  *
  * @author lucas
  */
-public class Particula implements Comparable<Particula>{
-    
+public class Particula implements Comparable<Particula> {
+
     private final int[] posicaoAtual;
     private double valorPosicaoAtual;
 
     private final int[] melhorPosicao;
     private Double valorMelhorPosicao;
-  
+
     private final double[] velocidade;
-    
-    
-    public Particula(){
+
+    private final static int[] PESO = {1, 20, 3, 8, 5, 10};
+    private final static int[] VALOR = {10, 15, 12, 13, 20, 30};
+
+    public Particula() {
         /*
         posicaoAtual = new int[];
         melhorPosicao = new int[];
         velocidade = new double[];
 
         valorMelhorPosicao = new Double(0);
-        */
+         */
         posicaoAtual = new int[PrincipalPSO.QTDATRIBUTOS];
         melhorPosicao = new int[PrincipalPSO.QTDATRIBUTOS];
         velocidade = new double[PrincipalPSO.QTDATRIBUTOS];
@@ -38,7 +40,7 @@ public class Particula implements Comparable<Particula>{
         inicializarVelocidade();
         valorMelhorPosicao = new Double(0);
     }
-    
+
     private void inicializarPosicao() {
         for (int i = 0; i < posicaoAtual.length; i++) {
             if (Math.random() < 0.5) {
@@ -48,13 +50,26 @@ public class Particula implements Comparable<Particula>{
             }
         }
     }
-    
+
+    private boolean validar() {
+        double pesodo_cromo = 0.0;
+
+        for (int i = 0; i < 6; i++) {
+            if (posicaoAtual[i] == 1) {
+                pesodo_cromo += PESO[i];
+            }
+        }
+
+        return pesodo_cromo <= 15;
+    }
+
     private void inicializarVelocidade() {
         for (int i = 0; i < velocidade.length; i++) {
             velocidade[i] = 1;
         }
     }
-     public ArrayList<Integer> getAtributos() {
+
+    public ArrayList<Integer> getAtributos() {
         ArrayList<Integer> atributos = new ArrayList<>();
         for (int i = 0; i < posicaoAtual.length; i++) {
             if (posicaoAtual[i] == 0) {
@@ -63,19 +78,29 @@ public class Particula implements Comparable<Particula>{
         }
         return atributos;
     }
-     
-      public void avaliarSolucao() {
-        if (valorPosicaoAtual > valorMelhorPosicao) {
-            valorMelhorPosicao = valorPosicaoAtual;
-            System.arraycopy(posicaoAtual, 0, melhorPosicao, 0, posicaoAtual.length);
+
+    public void avaliarSolucao() {
+        valorPosicaoAtual = 0.0;
+   
+        for (int i = 0; i < posicaoAtual.length; i++) {
+            if (posicaoAtual[i] == 1) {
+                valorPosicaoAtual += VALOR[i];
+            }
+            //System.out.println("print teste" + valor[i]  + " " +  aptidao);
         }
-    }
       
+            if (valorPosicaoAtual > valorMelhorPosicao) {
+                valorMelhorPosicao = valorPosicaoAtual;
+                System.arraycopy(posicaoAtual, 0, melhorPosicao, 0, posicaoAtual.length);
+            }
+        
+    }
+
     public void setValorPosicaoAtual(double v) {
         valorPosicaoAtual = v;
-    }  
-    
-     public void atualizarVelocidade() {
+    }
+
+    public void atualizarVelocidade() {
         for (int i = 0; i < velocidade.length; i++) {
             velocidade[i] = PrincipalPSO.ALFA * velocidade[i]
                     + PrincipalPSO.BETA * Math.random() * (melhorPosicao[i] - posicaoAtual[i])
@@ -91,8 +116,8 @@ public class Particula implements Comparable<Particula>{
             }
         }
     }
-     
-      public void atualizarPosicao() {
+
+    public void atualizarPosicao() {
         double s;
         for (int i = 0; i < posicaoAtual.length; i++) {
             //funcao sigmoid sobre a velocidade
@@ -121,15 +146,8 @@ public class Particula implements Comparable<Particula>{
     //Compara as particulas pela melhor solucao que cada uma tem
     @Override
     public int compareTo(Particula o) {
-        if (valorMelhorPosicao != o.getValorMelhorPosicao()) {
-            return valorMelhorPosicao.compareTo(o.getValorMelhorPosicao());
-        } else {
-            Integer thistam = this.getAtributos().size();
-            Integer anothertam = o.getAtributos().size();
-            return thistam.compareTo(anothertam);
-        }
+          return valorMelhorPosicao.compareTo(o.getValorMelhorPosicao());
+       
     }
 
-    
-    
 }

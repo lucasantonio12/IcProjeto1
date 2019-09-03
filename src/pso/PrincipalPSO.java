@@ -31,7 +31,7 @@ public class PrincipalPSO {
      public static void main(String[] args) {
         Nuvem nuvemParticulas = new Nuvem(QTDPARTICULAS);
         nuvemParticulas.executarPSO();
-        ArrayList<Integer> selecionados = nuvemParticulas.getMelhorSolucaoNuvem();
+        //ArrayList<Integer> selecionados = nuvemParticulas.getMelhorSolucaoNuvem();
         //FeatureSelection fs = new FeatureSelection(BASE.NOMEBASE, MODELO);
         //fs.removerAtributos(selecionados, true, "PSO");
         System.out.println("------PROCESSO CONCLUIDO------");
