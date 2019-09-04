@@ -2,6 +2,7 @@ package genetico;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -11,6 +12,8 @@ public class Individuo implements Comparable<Individuo> {
 
     private final Random random = new Random();
     private Double aptidao;
+    long timeInicio;
+    long timeFinal;
     private Double aptidaoMax;
     double pesoMaximo = 0;
     private final static int[] PESO = {1,10,2,20,40,50,1,2,3,8,7,9,18,14,1,5,16,24,15,16,13,25,24,32,12,17,19,9,6,8,7,4};
@@ -21,7 +24,7 @@ public class Individuo implements Comparable<Individuo> {
     
     private final int quantidade = 32;
     public Individuo() {
-
+        timeInicio = System.currentTimeMillis();
         do {
             cromossomo = new int[quantidade];
             this.setCromossomo();
@@ -102,7 +105,10 @@ public class Individuo implements Comparable<Individuo> {
 
     @Override
     public String toString() {
-        return   " Aptidao: " + aptidao + " peso: " + pesoMaximo + "\n";
+        timeFinal = System.currentTimeMillis();
+        long elapsTime = timeFinal - timeInicio;
+ 
+        return   " Aptidao: " + aptidao + " peso: " + pesoMaximo +" Tempo: "+ elapsTime + "\n";
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import java.util.Collections;
 import java.security.Principal;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -22,8 +23,11 @@ public class Nuvem {
     static int[] melhorPosicaoNuvem;
 
     private double valorMelhorPosicaoNuvem;
+    long timeInicio;
+    long timeFinal;
     
     public Nuvem(int qtdParticulas) {
+        timeInicio = System.currentTimeMillis();
         particulas = new ArrayList<>();
         for (int i = 0; i < PrincipalPSO.QTDPARTICULAS; i++) {
             particulas.add(new Particula());
@@ -63,7 +67,9 @@ public class Nuvem {
     }
 
     private void resumoIteracao(int iteracao) {
-        System.out.println("Iteracao " + iteracao + "| Melhor " + valorMelhorPosicaoNuvem);
+        timeFinal = System.currentTimeMillis();
+        long elapsTime = timeFinal - timeInicio;
+        System.out.println("Iteracao " + iteracao + "| Melhor " + valorMelhorPosicaoNuvem + " Tempo: " + elapsTime );
     }
 
     public ArrayList<Integer> getMelhorSolucaoNuvem() {

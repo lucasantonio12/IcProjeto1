@@ -46,6 +46,7 @@ public class Particula implements Comparable<Particula> {
 
     private void inicializarPosicao() {
         do {
+            
             for (int i = 0; i < posicaoAtual.length; i++) {
                 if (Math.random() < 0.5) {
                     posicaoAtual[i] = 0;
